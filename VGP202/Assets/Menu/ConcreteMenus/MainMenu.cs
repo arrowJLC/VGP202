@@ -17,7 +17,8 @@ public class MainMenu : BaseMenu
         base.InitState(context);
         state = MenuController.MenuStates.MainMenu;
 
-        playButton.onClick.AddListener(() => SceneManager.LoadScene(""));
+        playButton.onClick.AddListener(() => SceneManager.LoadScene("Infinite"));
+        levelsButton.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.Levels));
         settingsButton.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.Settings));
         quitButton.onClick.AddListener(QuitGame);
 

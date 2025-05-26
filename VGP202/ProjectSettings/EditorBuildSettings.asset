@@ -8,6 +8,33 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/LevelsMenu.unity
+    guid: 84b3fd9f58bcaf84ea100fe724b7555b
+  - enabled: 1
+    path: Assets/Scenes/Infinite.unity
+    guid: 9441b5c30b7fbe741be2fe5d4843e2de
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 1.unity
+    guid: 74aa4dbfc1f0fa04f89e42a94d80414b
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 2.unity
+    guid: bef6711761e52804b879911ada70f919
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 3.unity
+    guid: 94ad17803cddee646b5055ccd2e8da23
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 4.unity
+    guid: c3e7b1f6d312bdb4faac0d458c18b119
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 5.unity
+    guid: bc0c6cce54b794f4396137c533beea74
+  - enabled: 1
+    path: Assets/Scenes/LevelsFolder/Level 6.unity
+    guid: 5850d4a5f4202e04f9a9a4427668cd43
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: ff611faf9b3635149969ba84a9ac654e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 8a642a439daace54faaff0548cfe594f, type: 3}
   m_UseUCBPForAssetBundles: 0

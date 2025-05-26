@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
 
     public enum MenuStates
     {
-        MainMenu, Settings, Pause, InGame, Credits
+        MainMenu, Settings, Pause, InGame, Credits, Levels, HowTo
     }
 
     public MenuStates initalState = MenuStates.MainMenu;

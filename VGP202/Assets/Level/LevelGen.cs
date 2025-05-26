@@ -33,6 +33,7 @@ public class TileLevelGen : MonoBehaviour
 
     [Tooltip("Prefab for obstacle tile (as GameObject)")]
     public GameObject obstaclePrefab;
+    //public Obstacle obstaclePrefab;
 
     [Range(0, 1)]
     public float obstacleChance = 0.1f;
@@ -185,6 +186,8 @@ public class TileLevelGen : MonoBehaviour
         //You could also have a obstacle timeout value that gets reset everytime an obstacle spawns.
         //You could also have rules based on different obstacles
         //Add different obstalces
+
+        //This is where you should select different obstacles to spawn - and check for your spawn rules to ensure the game is playable
         if (Random.value < obstacleChance)
         {
             Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
