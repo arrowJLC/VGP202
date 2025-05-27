@@ -8,6 +8,7 @@ public class LaserScript : MonoBehaviour
     private void Start()
     {
         pc = GetComponent<PlayerController>();
+        pc = FindAnyObjectByType(typeof(PlayerController)) as PlayerController;
     }
     public void SetVelocity(Vector2 velocity)
     {
@@ -16,15 +17,18 @@ public class LaserScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Border") || collision.gameObject.CompareTag("Block"))
+        if(collision.gameObject.CompareTag("Border"))
         {
             Destroy(gameObject);
         }
 
+        if (collision.gameObject.CompareTag("Block"))
+        {  Destroy(gameObject);}
+
         if (collision.gameObject.CompareTag("Player") && CompareTag("EnemyProjectile"))
         {
             Destroy(gameObject);
-            //pc.onGameOver();
+            pc.onGameOver();
         }
     }
 

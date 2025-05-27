@@ -15,7 +15,7 @@ public class PauseMenu : BaseMenu
         base.InitState(context);
         state = MenuController.MenuStates.Pause;
 
-        returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
+        returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("Main Menu"));
         resumeGame.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.InGame));
         quitGame.onClick.AddListener(QuitGame);
     }

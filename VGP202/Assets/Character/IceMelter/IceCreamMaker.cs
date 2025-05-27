@@ -6,6 +6,10 @@ public class IceCreamMaker : MonoBehaviour
 {
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private float fireRate = 2;
+
+    AudioSource audioSource;
+    public AudioClip fireSound;
+    [SerializeField] private AudioClip deathSound;
     public Vector2 initialShotVelocity;
     public Transform spawnPointLeft;
     public LaserScript projectilePrefab;
@@ -15,6 +19,7 @@ public class IceCreamMaker : MonoBehaviour
     private void Start()
     {
         spawnPointLeft = GameObject.Find("FirePoint").transform;
+        audioSource = GetComponent<AudioSource>();
         //playerPrefab = FindFirstObjectByType<PlayerController>();
     }
     private void Update()
@@ -39,6 +44,7 @@ public class IceCreamMaker : MonoBehaviour
     private void iceMelter()
     {
         Vector2 shotVelocity = initialShotVelocity;
+        audioSource.PlayOneShot(fireSound);
 
         shotVelocity.x = -Mathf.Abs(initialShotVelocity.x);
         LaserScript curProjectile = Instantiate(projectilePrefab, spawnPointLeft.position, spawnPointLeft.rotation);
@@ -49,7 +55,9 @@ public class IceCreamMaker : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Border") || collision.gameObject.CompareTag("Projectile"))
         {
-            Destroy(gameObject);
+            // fix death sound not playing
+            Debug.Log("Death sound triggered");
+            Destroy(gameObject, deathSound.length);
         }
     }
 }

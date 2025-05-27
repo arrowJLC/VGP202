@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
 
 public class InputManager : Singleton<InputManager>
 {
@@ -9,14 +11,19 @@ public class InputManager : Singleton<InputManager>
     public event System.Action OnTouchBegin;
     public event System.Action OnTouchEnd;
 
+    public Button pauseButton;
+    public MenuController currentMenuController;
+
 
     protected override void Awake()
     {
         base.Awake();
         input = new PlayerControls();
         mainCamera = Camera.main;
+        pauseButton.onClick.AddListener(() => currentMenuController.SetActiveState(MenuController.MenuStates.Pause));
 
     }
+    
 
     private void OnEnable()
     {

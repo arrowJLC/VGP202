@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UI;
 
 public class TapDetection : MonoBehaviour
 {
     public PlayerController pc;
     Rigidbody2D rb;
     InputManager im;
-
+    
     float distThresold = 0.5f;
     float dirThresold = 0.9f;
 

@@ -2,9 +2,12 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header(" ")]
+    [Header(" ")]
     TapDetection td;
     private Rigidbody2D rb;
     public float jumpForce = 06f;
@@ -17,6 +20,14 @@ public class PlayerController : MonoBehaviour
     public Transform spawnPoint;
     public LaserScript projectilePrefab;
 
+    [Header("Audio")]
+    public AudioClip jumpSound;
+    public AudioClip gravitySound;
+    public AudioClip deathSound;
+    public AudioClip fireSound;
+
+    AudioSource audioSource;
+
     bool pressedJump = false;
     public bool top;
 
@@ -24,18 +35,25 @@ public class PlayerController : MonoBehaviour
 
     public GameObject playerGoal;
 
+    public MenuController currentMenuController;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         td = GetComponent<TapDetection>();
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         // Check if the player is on the ground
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-       
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
+        }
+
     }
     
     public void playerJump()
@@ -44,6 +62,7 @@ public class PlayerController : MonoBehaviour
        // rb.linearVelocity = Vector2.zero;
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         //rb.linearVelocityY =jumpForce;
+        audioSource.PlayOneShot(jumpSound);
         
     }
 
@@ -52,7 +71,8 @@ public class PlayerController : MonoBehaviour
         // rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce);
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(Vector2.up * -jumpForce, ForceMode2D.Impulse);
-        
+        audioSource.PlayOneShot(jumpSound);
+
     }
 
     public void RotationB()
@@ -64,6 +84,7 @@ public class PlayerController : MonoBehaviour
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
             rb.gravityScale = Mathf.Abs(rb.gravityScale) * gravity;
             //rb.gravityScale = 1;
+            audioSource.PlayOneShot(gravitySound);
         }
         else
         {
@@ -80,7 +101,8 @@ public class PlayerController : MonoBehaviour
         {
             top = true;
             transform.eulerAngles = new Vector3(0f, 180f, -180f);
-            rb.gravityScale = -1; 
+            rb.gravityScale = -1;
+            audioSource.PlayOneShot(gravitySound);
 
         }
         else
@@ -95,14 +117,18 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.CompareTag("Block"))
         {
             Debug.Log("player hit ob");
+            // fix death sound not playing
+            audioSource.PlayOneShot(deathSound);
+            Destroy(gameObject, deathSound.length);
             playerGoal.SetActive(true);
-            //onGameOver();
+            onGameOver();
         }
         if (collision.collider.CompareTag("EnemyProjectile"))
         {
-            Destroy(gameObject);
+            audioSource.PlayOneShot(deathSound);
+            Destroy(gameObject, deathSound.length);
             //run end game script here
-            //onGameOver();
+            onGameOver();
             Debug.Log("Game Over");
         }
 
@@ -110,6 +136,7 @@ public class PlayerController : MonoBehaviour
 
     public void snowBall()
     {
+        audioSource.PlayOneShot(fireSound);
         Vector2 shotVelocity = initialShotVelocity;
 
         shotVelocity.x = Mathf.Abs(initialShotVelocity.x);
@@ -120,6 +147,8 @@ public class PlayerController : MonoBehaviour
     public void onGameOver()
     {
 
+        //Destroy(gameObject, deathSound.length);
+        SceneManager.LoadScene("GameOver");
     }
     //bool onGround()
     //{
