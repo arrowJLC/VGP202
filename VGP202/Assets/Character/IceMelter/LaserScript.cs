@@ -23,12 +23,14 @@ public class LaserScript : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Block"))
-        {  Destroy(gameObject);}
+        {
+            Destroy(gameObject);
+        }
 
         if (collision.gameObject.CompareTag("Player") && CompareTag("EnemyProjectile"))
         {
             Destroy(gameObject);
-            pc.onGameOver();
+            //pc.onGameOver();
         }
     }
 

@@ -9,6 +9,7 @@ TagManager:
   - Border
   - Enemy
   - Projectile
+  - Timer
   layers:
   - Default
   - TransparentFX

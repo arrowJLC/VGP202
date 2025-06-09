@@ -6,7 +6,9 @@ using Unity.VisualScripting;
 
 public class TileLevelGen : MonoBehaviour
 {
-    public enum levelSpeed { slow = 3, normal = 4, fast = 5, insane = 7 }
+    public enum levelSpeed { slow = 3, normal = 4, fast = 5, insane = 7, wild = 10}
+
+    InputManager inputManager;
 
     levelSpeed currentSpeed = levelSpeed.slow;
 
@@ -56,13 +58,14 @@ public class TileLevelGen : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        inputManager = gameObject.GetComponent<InputManager>();
 
         if (chunkPrefab == null || groundPrefab == null || obstaclePrefab == null)
         {
             Debug.LogError("Assign all prefab references in the inspector.");
             return;
         }
-
+        
 
         chunkPool = new ObjectPool<GameObject>
         (

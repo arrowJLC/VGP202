@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseMenu : BaseMenu
+public class GameOverMenu : BaseMenu
 {
-    public Button resumeGame;
+    public Button playGame;
     public Button returnToMenu;
-    public Button quitGame;
 
     InputManager inputManager;
 
@@ -19,25 +16,22 @@ public class PauseMenu : BaseMenu
     public override void InitState(MenuController context)
     {
         base.InitState(context);
-        state = MenuController.MenuStates.Pause;
+        state = MenuController.MenuStates.Death;
 
         returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("Main Menu"));
-        resumeGame.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.InGame));
-        quitGame.onClick.AddListener(QuitGame);
+        playGame.onClick.AddListener(() => SceneManager.LoadScene("Infinite"));
     }
 
     public override void EnterState()
     {
         base.EnterState();
         Time.timeScale = 0.0f;
-        //inputManager.stopTimer();
     }
 
     public override void ExitState()
     {
         base.ExitState();
         Time.timeScale = 1.0f;
-        //inputManager.startTimer();
     }
 
     public void OnDestroy()
@@ -45,3 +39,4 @@ public class PauseMenu : BaseMenu
         Time.timeScale = 1.0f;
     }
 }
+

@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,7 +16,7 @@ public class InputManager : Singleton<InputManager>
     public Button pauseButton;
     public MenuController currentMenuController;
 
-
+    
     protected override void Awake()
     {
         base.Awake();

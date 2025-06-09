@@ -120,15 +120,16 @@ public class PlayerController : MonoBehaviour
             // fix death sound not playing
             audioSource.PlayOneShot(deathSound);
             Destroy(gameObject, deathSound.length);
-            playerGoal.SetActive(true);
-            onGameOver();
+            //playerGoal.SetActive(true);
+            //onGameOver();
         }
         if (collision.collider.CompareTag("EnemyProjectile"))
         {
             audioSource.PlayOneShot(deathSound);
             Destroy(gameObject, deathSound.length);
+
             //run end game script here
-            onGameOver();
+            //onGameOver();
             Debug.Log("Game Over");
         }
 
