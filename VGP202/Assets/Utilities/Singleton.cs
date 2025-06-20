@@ -43,3 +43,13 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
         Destroy(gameObject);
     }
 }
+
+//public static InputManager Instance
+//{
+//    get
+//    {
+//        if (!instance)
+//            instance = new GameObject("InputManager").AddComponent<InputManager>();
+//        return instance;
+//    }
+//}

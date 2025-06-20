@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
+    private string deathTime;
     public BaseMenu[] allMenus;
 
     public enum MenuStates
@@ -52,6 +53,7 @@ public class MenuController : MonoBehaviour
 
         if (currentState != null)
         {
+            Debug.Log("Menu changed to: " + currentState);
             currentState.ExitState();
             currentState.gameObject.SetActive(false);
         }
@@ -68,5 +70,15 @@ public class MenuController : MonoBehaviour
 
         menuStack.Pop();
         SetActiveState(menuStack.Peek(), true);
+    }
+
+    public void SetDeathTime(string time)
+    {
+        deathTime = time;
+    }
+
+    public string GetDeathTime()
+    {
+        return deathTime;
     }
 }

@@ -29,8 +29,7 @@ public class LaserScript : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player") && CompareTag("EnemyProjectile"))
         {
-            Destroy(gameObject);
-            //pc.onGameOver();
+            Destroy(gameObject);     
         }
     }
 

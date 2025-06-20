@@ -22,7 +22,14 @@ public class PauseMenu : BaseMenu
         state = MenuController.MenuStates.Pause;
 
         returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("Main Menu"));
-        resumeGame.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.InGame));
+        //resumeGame.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.InGame));
+        resumeGame.onClick.AddListener(() =>
+        {
+            SetNextMenu(MenuController.MenuStates.InGame);
+
+            var player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
+            player?.OnResumeGame(); // Clear any jump state
+        });
         quitGame.onClick.AddListener(QuitGame);
     }
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
+using System.Collections;
 
 public class TapDetection : MonoBehaviour
 {
@@ -29,11 +30,27 @@ public class TapDetection : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         //PlayerController pu = Object.FindFirstObjectByType<PlayerController>();
-        pc = Object.FindFirstObjectByType<PlayerController>();
+         //pc = Object.FindFirstObjectByType<PlayerController>();
+
+        GameMaster.Instance.OnPlayerSpawned += SetPlayer;
+
+       StartCoroutine(AssignPlayerNextFrame());
+
+        //var existingPlayer = GameObject.FindWithTag("Player");
+
+        //if (existingPlayer != null)
+        //{
+        //    pc = existingPlayer.GetComponent<PlayerController>();
+        //}
 
         InputManager.Instance.OnTouchBegin += TouchStarted;
         InputManager.Instance.OnTouchEnd += TouchEnded;
-    }       
+    }
+
+    private void SetPlayer(PlayerController newPlayer)
+    {
+        pc = newPlayer;
+    }
 
     private void TouchStarted()
     {
@@ -70,7 +87,7 @@ public class TapDetection : MonoBehaviour
     {
         Debug.Log($"Tap at {InputManager.Instance.PrimaryPosition()}");
 
-        if(pc.top == false)
+        if (pc.top == false)
         {
             if (pc != null)
             {
@@ -128,4 +145,32 @@ public class TapDetection : MonoBehaviour
             return;
         }
     }
+
+    private void OnDestroy()
+    {
+        if (GameMaster.Instance != null)
+            GameMaster.Instance.OnPlayerSpawned -= SetPlayer;
+
+        if (InputManager.Instance != null)
+        {
+            InputManager.Instance.OnTouchBegin -= TouchStarted;
+            InputManager.Instance.OnTouchEnd -= TouchEnded;
+        }
+    }
+
+    IEnumerator AssignPlayerNextFrame()
+    {
+        yield return new WaitForEndOfFrame(); // wait 1 frame
+
+        if (pc == null)
+        {
+            var existingPlayer = GameObject.FindWithTag("Player");
+            if (existingPlayer != null)
+            {
+                pc = existingPlayer.GetComponent<PlayerController>();
+                Debug.Log("Fallback assigned player on Start.");
+            }
+        }
+    }
+
 }

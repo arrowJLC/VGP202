@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Transform spawnPoint;
     public LaserScript projectilePrefab;
 
+
     [Header("Audio")]
     public AudioClip jumpSound;
     public AudioClip gravitySound;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
 
     bool pressedJump = false;
+    bool canJump = true;
     public bool top;
 
     private bool isGrounded;
@@ -36,6 +38,8 @@ public class PlayerController : MonoBehaviour
     public GameObject playerGoal;
 
     public MenuController currentMenuController;
+    InGameMenu IGM;
+    public LevelTimer levelTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,36 +47,42 @@ public class PlayerController : MonoBehaviour
         td = GetComponent<TapDetection>();
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+        IGM = FindObjectOfType<InGameMenu>();
+        levelTimer = FindAnyObjectByType<LevelTimer>();
     }
 
     void Update()
     {
         // Check if the player is on the ground
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
+        //}
 
     }
     
     public void playerJump()
     {
-        //rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-       // rb.linearVelocity = Vector2.zero;
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        //rb.linearVelocityY =jumpForce;
-        audioSource.PlayOneShot(jumpSound);
-        
+        if (canJump)
+        {
+            //rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            // rb.linearVelocity = Vector2.zero;
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            //rb.linearVelocityY =jumpForce;
+            audioSource.PlayOneShot(jumpSound);
+        }
     }
 
     public void playerNegativeJump()
     {
-        // rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce);
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(Vector2.up * -jumpForce, ForceMode2D.Impulse);
-        audioSource.PlayOneShot(jumpSound);
-
+        if (canJump)
+        {
+            // rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce);
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(Vector2.up * -jumpForce, ForceMode2D.Impulse);
+            audioSource.PlayOneShot(jumpSound);
+        }
     }
 
     public void RotationB()
@@ -122,14 +132,22 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject, deathSound.length);
             //playerGoal.SetActive(true);
             //onGameOver();
+            //IGM.OnDeath();
+            levelTimer.stopTimer(); // Stop the timer
+            string finalTime = levelTimer.getTime();
+
+            IGM.OnDeath(finalTime);
         }
         if (collision.collider.CompareTag("EnemyProjectile"))
         {
             audioSource.PlayOneShot(deathSound);
             Destroy(gameObject, deathSound.length);
 
-            //run end game script here
-            //onGameOver();
+            levelTimer.stopTimer(); // Stop the timer
+            string finalTime = levelTimer.getTime();
+
+            IGM.OnDeath(finalTime);
+
             Debug.Log("Game Over");
         }
 
@@ -150,6 +168,19 @@ public class PlayerController : MonoBehaviour
 
         //Destroy(gameObject, deathSound.length);
         SceneManager.LoadScene("GameOver");
+    }
+
+    public void OnResumeGame()
+    {
+        // Clear jump input or debounce logic here
+        canJump = false;
+        StartCoroutine(EnableJumpAfterDelay());
+    }
+
+    private IEnumerator EnableJumpAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(0.5f); // Slight delay after resume
+        canJump = true;
     }
     //bool onGround()
     //{

@@ -11,8 +11,17 @@ public class LevelTimer : MonoBehaviour
     private void Start()
     {
         currentTime = 0;
+
+        if (GameMaster.Instance != null)
+        {
+            GameMaster.Instance.OnPlayerSpawned += HandlePlayerSpawned;
+        }
     }
 
+    private void HandlePlayerSpawned(PlayerController pc)
+    {
+        startTimer();
+    }
     private void Update()
     {
         if (timerActive)
@@ -24,6 +33,11 @@ public class LevelTimer : MonoBehaviour
         //currentTimeText.text = time.ToString(@"mm\:ss\:fff");
     }
 
+    public string getTime()
+    {
+        TimeSpan time = TimeSpan.FromSeconds(currentTime);
+        return currentTimeText.text = time.Minutes.ToString() + ":" + time.Seconds.ToString("D2");
+    }
     public void startTimer()
     {
         timerActive = true;
@@ -41,5 +55,13 @@ public class LevelTimer : MonoBehaviour
             startTimer();
         }
     }
-  
+
+    private void OnDestroy()
+    {
+        if (GameMaster.Instance != null)
+        {
+            GameMaster.Instance.OnPlayerSpawned -= HandlePlayerSpawned;
+        }
+    }
+
 }

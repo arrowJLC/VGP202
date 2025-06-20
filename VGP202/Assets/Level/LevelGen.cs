@@ -55,6 +55,13 @@ public class TileLevelGen : MonoBehaviour
     private float screenRightEdgeTop;
     private float nextSpawnPosTop = 0f;
 
+    [Header("Experimental Settings")]
+    [SerializeField] public List<GameObject> obstaclePrefabs;
+    [SerializeField] private float obstacleSChance = 0.3f;
+    [SerializeField] private float obstacleCooldown = 2f; // Seconds between spawns
+
+    private float lastObstacleTime = 0f;
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -197,9 +204,9 @@ public class TileLevelGen : MonoBehaviour
             Vector3 obstaclePosTop = new Vector3(x, 4.1f, 0f);
             GameObject obstacle = Instantiate(obstaclePrefab, chunk.transform);
 
-            
+
             obstacle.transform.localPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstaclePosTop;
-            
+
             return;
         }
 
@@ -210,6 +217,37 @@ public class TileLevelGen : MonoBehaviour
         //    obstacle.transform.localPosition = obstaclePosTop;
         //}
     }
+
+    //private void GenerateObstacle(GameObject chunk, int x)
+    //{
+    //    float timeSinceLast = Time.time - lastObstacleTime;
+
+    //    // Enforce obstacle cooldown
+    //    if (timeSinceLast < obstacleCooldown)
+    //        return;
+
+    //    // Check if this position should spawn an obstacle
+    //    if (Random.value < obstacleChance)
+    //    {
+    //        // Select a random obstacle from the list
+    //        GameObject selectedObstacle = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
+
+    //        // Position choices
+    //        Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
+    //        Vector3 obstacleTopPos = new Vector3(x, 4.1f, 0f);
+
+    //        // Optional: Add logic here to enforce obstacle rules (e.g., don't block both top & bottom consecutively)
+
+    //        // Randomly decide to spawn on top or bottom
+    //        Vector3 spawnPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstacleTopPos;
+
+    //        GameObject obstacle = Instantiate(selectedObstacle, chunk.transform);
+    //        obstacle.transform.localPosition = spawnPosition;
+
+    //        // Reset cooldown timer
+    //        lastObstacleTime = Time.time;
+    //    }
+    //}
 
     private void CalculateScreenBounds()
     {
@@ -281,6 +319,21 @@ public class TileLevelGen : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
+//[System.Serializable]
+//public class ObstacleType
+//{
+//    public GameObject prefab;
+//    public float minDistanceBetween = 2f; // Can be used for spacing logic
+//    public bool canSpawnTop;
+//    public bool canSpawnBottom;
+//}
 
 
 
