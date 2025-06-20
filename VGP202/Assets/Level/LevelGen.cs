@@ -117,10 +117,15 @@ public class TileLevelGen : MonoBehaviour
         {
             scrollSpeed = (int)levelSpeed.fast;
         }
-        if (gameTime >= 181f)
+        if (gameTime >= 181f && gameTime <= 300f)
         {
             scrollSpeed = (int)levelSpeed.insane;
             //StartCoroutine(melterSpawn());
+        }
+
+        if (gameTime >= 301f)
+        {
+            scrollSpeed = (int)levelSpeed.wild;
         }
     }
 
@@ -190,64 +195,96 @@ public class TileLevelGen : MonoBehaviour
         }
     }
 
+    //private void GenerateObstacle(GameObject chunk, int x)
+    //{
+    //    //instead of just returning when the first obstacle spawned - you should time out obstacles from spawning - possiblity skipping the loop where this function is called
+    //    //You could also have a obstacle timeout value that gets reset everytime an obstacle spawns.
+    //    //You could also have rules based on different obstacles
+    //    //Add different obstalces
+
+    //    //This is where you should select different obstacles to spawn - and check for your spawn rules to ensure the game is playable
+    //    if (Random.value < obstacleChance)
+    //    {
+    //        Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
+    //        Vector3 obstaclePosTop = new Vector3(x, 4.1f, 0f);
+    //        GameObject obstacle = Instantiate(obstaclePrefab, chunk.transform);
+
+
+    //        obstacle.transform.localPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstaclePosTop;
+
+    //        return;
+    //    }
+
+    //    //if (Random.value < obstacleChance)
+    //    //{
+    //    //    Vector3 obstaclePosTop = new Vector3(x, 4.1f, 0f);
+    //    //    GameObject obstacle = Instantiate(obstaclePrefab, chunk.transform);
+    //    //    obstacle.transform.localPosition = obstaclePosTop;
+    //    //}
+    //}
+
     private void GenerateObstacle(GameObject chunk, int x)
     {
-        //instead of just returning when the first obstacle spawned - you should time out obstacles from spawning - possiblity skipping the loop where this function is called
-        //You could also have a obstacle timeout value that gets reset everytime an obstacle spawns.
-        //You could also have rules based on different obstacles
-        //Add different obstalces
+        float timeSinceLast = Time.time - lastObstacleTime;
 
-        //This is where you should select different obstacles to spawn - and check for your spawn rules to ensure the game is playable
-        if (Random.value < obstacleChance)
-        {
-            Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
-            Vector3 obstaclePosTop = new Vector3(x, 4.1f, 0f);
-            GameObject obstacle = Instantiate(obstaclePrefab, chunk.transform);
-
-
-            obstacle.transform.localPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstaclePosTop;
-
+        // Enforce obstacle cooldown
+        if (timeSinceLast < obstacleCooldown)
             return;
-        }
 
-        //if (Random.value < obstacleChance)
-        //{
-        //    Vector3 obstaclePosTop = new Vector3(x, 4.1f, 0f);
-        //    GameObject obstacle = Instantiate(obstaclePrefab, chunk.transform);
-        //    obstacle.transform.localPosition = obstaclePosTop;
-        //}
+        // Check if this position should spawn an obstacle
+        if (Random.value < obstacleSChance)
+        {
+            // Select a random obstacle from the list
+            GameObject selectedObstacle = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
+
+            // Position choices
+            Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
+            Vector3 obstacleTopPos = new Vector3(x, 4.1f, 0f);
+
+            // Optional: Add logic here to enforce obstacle rules (e.g., don't block both top & bottom consecutively)
+
+            // Randomly decide to spawn on top or bottom
+            Vector3 spawnPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstacleTopPos;
+
+            GameObject obstacle = Instantiate(selectedObstacle, chunk.transform);
+            obstacle.transform.localPosition = spawnPosition;
+
+            // Reset cooldown timer
+            lastObstacleTime = Time.time;
+        }
     }
 
     //private void GenerateObstacle(GameObject chunk, int x)
     //{
     //    float timeSinceLast = Time.time - lastObstacleTime;
 
-    //    // Enforce obstacle cooldown
     //    if (timeSinceLast < obstacleCooldown)
     //        return;
 
-    //    // Check if this position should spawn an obstacle
     //    if (Random.value < obstacleChance)
     //    {
-    //        // Select a random obstacle from the list
     //        GameObject selectedObstacle = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
 
-    //        // Position choices
     //        Vector3 obstacleBotPos = new Vector3(x, -4f, 0f);
     //        Vector3 obstacleTopPos = new Vector3(x, 4.1f, 0f);
 
-    //        // Optional: Add logic here to enforce obstacle rules (e.g., don't block both top & bottom consecutively)
+    //        bool isTop = Random.Range(0, 2) == 0;
 
-    //        // Randomly decide to spawn on top or bottom
-    //        Vector3 spawnPosition = (Random.Range(0, 2) == 0) ? obstacleBotPos : obstacleTopPos;
+    //        Vector3 spawnPosition = isTop ? obstacleTopPos : obstacleBotPos;
 
     //        GameObject obstacle = Instantiate(selectedObstacle, chunk.transform);
     //        obstacle.transform.localPosition = spawnPosition;
 
-    //        // Reset cooldown timer
+    //        // Rotate top-spawning obstacle 180 degrees
+    //        if (isTop)
+    //        {
+    //            obstacle.transform.localRotation = Quaternion.Euler(0f, 0f, 180f);
+    //        }
+
     //        lastObstacleTime = Time.time;
     //    }
     //}
+
 
     private void CalculateScreenBounds()
     {
