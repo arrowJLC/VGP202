@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 7112601960690857}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49, y: 0.23, z: 0}
+  m_LocalPosition: {x: 0.82, y: 0.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -338,7 +338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1282c5ff7ac7c140b21049ae23c256b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 6
+  currentMenuController: {fileID: 0}
+  levelTimer: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -347,14 +348,16 @@ MonoBehaviour:
   initialShotVelocity: {x: 5, y: 0}
   spawnPoint: {fileID: 3688796345469837344}
   projectilePrefab: {fileID: 4200844050065923393, guid: 413e3e85d3c0813498cf4f6576e47cd7, type: 3}
+  top: 0
+  playerGoal: {fileID: 0}
+  frames: []
+  frameRate: 12
+  stepDuration: 1
+  jumpForce: 6
   jumpSound: {fileID: 8300000, guid: dbb8d9115ab613349b81c83696f3700b, type: 3}
   gravitySound: {fileID: 8300000, guid: 6d90b03de8394f84e8c05f9329c1406d, type: 3}
   deathSound: {fileID: 8300000, guid: e97425acd84e6f3419008e988bcaa3c0, type: 3}
   fireSound: {fileID: 8300000, guid: ce5c09ca6b8aea342bc7d0d2897248c4, type: 3}
-  top: 0
-  playerGoal: {fileID: 0}
-  currentMenuController: {fileID: 0}
-  levelTimer: {fileID: 0}
 --- !u!82 &2089376974881852575
 AudioSource:
   m_ObjectHideFlags: 0

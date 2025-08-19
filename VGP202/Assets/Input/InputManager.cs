@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 //[DefaultExecutionOrder(-1)]
-    public class InputManager : Singleton<InputManager>
+public class InputManager : Singleton<InputManager>
 {
     PlayerControls input;
     Camera mainCamera;
@@ -17,43 +18,42 @@ using UnityEngine.UI;
     public Button pauseButton;
     public MenuController currentMenuController;
 
-    
+    private bool isInputEnabled = true;
+
     protected override void Awake()
     {
         base.Awake();
         input = new PlayerControls();
         mainCamera = Camera.main;
-        pauseButton.onClick.AddListener(() => currentMenuController.SetActiveState(MenuController.MenuStates.Pause));
-
-    }
-    
-
-    private void OnEnable()
-    {
-        input.Enable();
-        input.Screen.Touch.started += ctx => OnTouchBegin?.Invoke();
-        input.Screen.Touch.canceled += ctx => OnTouchEnd?.Invoke();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    //private void OnDisable()
-    //{
-    //    input.Screen.Touch.started -= ctx => OnTouchBegin?.Invoke();
-    //    input.Screen.Touch.canceled -= ctx => OnTouchBegin?.Invoke();
-    //    input.Disable();
+    private void OnEnable()
+    {
+        if (input == null)
+            input = new PlayerControls();
 
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
+        input.Enable();
+        input.Screen.Touch.started += ctx => OnTouchBegin?.Invoke();
+        input.Screen.Touch.canceled += ctx => OnTouchEnd?.Invoke();
+    }
 
-    //public Vector2 PrimaryPosition()
-    //{
-    //    Vector2 touchPos = input.Screen.PrimaryPosition.ReadValue<Vector2>();
+    private void OnDisable()
+    {
+        if (input != null)
+        {
+            input.Disable();
+            input.Screen.Touch.started -= ctx => OnTouchBegin?.Invoke();
+            input.Screen.Touch.canceled -= ctx => OnTouchEnd?.Invoke();
+        }
+    }
 
-    //    return mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, mainCamera.nearClipPlane));
-
-    //    //return mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, mainCamera.nearClipPlane, touchPos.y));
-    //}
+    private void OnDestroy()
+    {
+        // Always unsubscribe to prevent leaks
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     public Vector2 PrimaryPosition()
     {
@@ -71,42 +71,290 @@ using UnityEngine.UI;
         return mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, mainCamera.nearClipPlane));
     }
 
+    public void SetInputEnabled(bool enabled)
+    {
+        isInputEnabled = enabled;
+    }
+
+    public bool IsInputEnabled()
+    {
+        return isInputEnabled;
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         mainCamera = Camera.main;
+        //StartCoroutine(AssignPauseButtonWhenReady(scene.name));
+        
 
-        // player = GameObject.FindWithTag("Player")?.transform;
-        Transform existingPlayer = transform.Find("Player");
-        if (existingPlayer != null)
+        currentMenuController = FindFirstObjectByType<MenuController>();
+        pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+        if (pauseButton != null && currentMenuController != null)
         {
-            Destroy(existingPlayer.gameObject);
-        }
-
-        if (pauseButton == null)
-            pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
-
-        if (pauseButton != null)
-        {
+            pauseButton.onClick.RemoveAllListeners();
             pauseButton.onClick.AddListener(() =>
-            {
-                if (currentMenuController != null)
-                    currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
-            });
+                currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+            );
+
+            Debug.Log($"Pause button in scene: {scene.name}");
         }
-
-        if (currentMenuController == null)
+        else
         {
-            currentMenuController = FindObjectOfType<MenuController>();
-
-
+            Debug.LogWarning($"PauseButton or MenuController not found in scene: {scene.name}");
         }
     }
+
+    private IEnumerator AssignPauseButtonWhenReady(string sceneName)
+    {
+        yield return null; // wait 1 frame
+        yield return null; 
+
+        currentMenuController = FindObjectOfType<MenuController>();
+        pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+        if (pauseButton != null && currentMenuController != null)
+        {
+            pauseButton.onClick.RemoveAllListeners();
+            pauseButton.onClick.AddListener(() =>
+                currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+            );
+
+            Debug.Log($"Pause button assigned in scene: {sceneName}");
+        }
+        else
+        {
+            Debug.LogWarning($"PauseButton or MenuController not found in scene: {sceneName}");
+        }
+    }  
 }
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+//{
+//    mainCamera = Camera.main;
+
+//    // player = GameObject.FindWithTag("Player")?.transform;
+//    Transform existingPlayer = transform.Find("Player");
+//    if (existingPlayer != null)
+//    {
+//        Destroy(existingPlayer.gameObject);
+//    }
+
+
+
+//    if (pauseButton == null)
+//        pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//    if (pauseButton != null)
+//    {
+//        pauseButton.onClick.AddListener(() =>
+//        {
+//            if (currentMenuController != null)
+//                currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
+//        });
+//    }
+
+//    if (currentMenuController == null)
+//    {
+//        currentMenuController = FindObjectOfType<MenuController>();
+
+
+//    }
+//}
+
+//private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+//{
+//    mainCamera = Camera.main;
+//    currentMenuController = FindObjectOfType<MenuController>();
+//    pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//    if (pauseButton != null && currentMenuController != null)
+//    {
+//        pauseButton.onClick.RemoveAllListeners();
+//        pauseButton.onClick.AddListener(() =>
+//            currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//        );
+//    }
+//    else
+//    {
+//        Debug.LogWarning("PauseButton or MenuController not found in " + scene.name);
+//    }
+//}
+
+//private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+//{
+//    mainCamera = Camera.main;
+
+//    //currentMenuController = FindObjectOfType<MenuController>();
+
+//    Transform existingPlayer = transform.Find("Player");
+//    if (existingPlayer != null)
+//    {
+//        Destroy(existingPlayer.gameObject);
+//    }
+
+//    // Only assign when in the first game mode
+//    if (scene.name.StartsWith("Level")) // or your first mode scene name pattern
+//    {
+//        currentMenuController = FindObjectOfType<MenuController>();
+//        pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//        if (pauseButton != null && currentMenuController != null)
+//        {
+//            pauseButton.onClick.RemoveAllListeners(); // avoid duplicate listeners
+//            pauseButton.onClick.AddListener(() =>
+//                currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//            );
+//        }
+//        else
+//        {
+//            Debug.LogWarning("PauseButton or MenuController not found in scene: " + scene.name);
+//        }
+//    }
+
+//    if (scene.name == "Infinite")
+//    {
+//        currentMenuController = FindObjectOfType<MenuController>();
+//        pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//        if (pauseButton != null && currentMenuController != null)
+//        {
+//            pauseButton.onClick.RemoveAllListeners(); // avoid duplicate listeners
+//            pauseButton.onClick.AddListener(() =>
+//                currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//            );
+//        }
+//        else
+//        {
+//            Debug.LogWarning("PauseButton or MenuController not found in scene: " + scene.name);
+//        }
+//    }
+//}
+
+//private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+//{
+//    mainCamera = Camera.main;
+
+//    // Always reassign MenuController first
+//    currentMenuController = FindObjectOfType<MenuController>();
+
+//    // Find PauseButton only if it exists in the scene
+//    pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//    if (pauseButton != null && currentMenuController != null)
+//    {
+//        pauseButton.onClick.RemoveAllListeners(); // avoid duplicate listeners
+//        pauseButton.onClick.AddListener(() =>
+//            currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//        );
+//    }
+//    else
+//    {
+//        Debug.LogWarning($"PauseButton or MenuController not found in scene: {scene.name}");
+//    }
+//}
+
+//private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+//{
+//    mainCamera = Camera.main;
+
+//    // Always reassign MenuController first
+//    currentMenuController = FindObjectOfType<MenuController>();
+
+//    // Find PauseButton only if it exists in the scene
+//    pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+
+//    if (pauseButton != null && currentMenuController != null)
+//    {
+//        pauseButton.onClick.RemoveAllListeners(); // avoid duplicate listeners
+//        pauseButton.onClick.AddListener(() =>
+//            currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//        );
+//    }
+//    else
+//    {
+//        Debug.LogWarning($"PauseButton or MenuController not found in scene: {scene.name}");
+//    }
+//}
+
+
+
+//protected override void Awake()
+//{
+//    base.Awake();
+//    input = new PlayerControls();
+//    mainCamera = Camera.main;
+
+//    SceneManager.sceneLoaded += OnSceneLoaded;
+
+//    //pauseButton.onClick.AddListener(() => currentMenuController.SetActiveState(MenuController.MenuStates.Pause));
+//    //if (pauseButton == null)
+//    //{
+//    //    pauseButton = GameObject.Find("PauseButton")?.GetComponent<Button>();
+//    //}
+
+//    //if (pauseButton != null && currentMenuController != null)
+//    //{
+//    //    pauseButton.onClick.AddListener(() =>
+//    //        currentMenuController.SetActiveState(MenuController.MenuStates.Pause)
+//    //    );
+//    //}
+//}
+
+
+//private void OnEnable()
+//{
+//    input.Enable();
+//    input.Screen.Touch.started += ctx => OnTouchBegin?.Invoke();
+//    input.Screen.Touch.canceled += ctx => OnTouchEnd?.Invoke();
+
+//    SceneManager.sceneLoaded += OnSceneLoaded;
+//}
+
+//private void OnDisable()
+//{
+//    input.Screen.Touch.started -= ctx => OnTouchBegin?.Invoke();
+//    input.Screen.Touch.canceled -= ctx => OnTouchBegin?.Invoke();
+//    input.Disable();
+
+//    SceneManager.sceneLoaded -= OnSceneLoaded;
+//}
+
+//public Vector2 PrimaryPosition()
+//{
+//    Vector2 touchPos = input.Screen.PrimaryPosition.ReadValue<Vector2>();
+
+//    return mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, mainCamera.nearClipPlane));
+
+//    //return mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, mainCamera.nearClipPlane, touchPos.y));
+//}
+
+//private void OnDestroy()
+//{
+//    SceneManager.sceneLoaded -= OnSceneLoaded;
+//}
 
 
 

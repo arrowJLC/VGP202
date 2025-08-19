@@ -10,7 +10,7 @@ public class TileLevelGen : MonoBehaviour
 
     InputManager inputManager;
 
-    levelSpeed currentSpeed = levelSpeed.slow;
+    //levelSpeed currentSpeed = levelSpeed.slow;
 
     [Header("Level Generation Settings")]
     public int scrollSpeed = (int)levelSpeed.slow;

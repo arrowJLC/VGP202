@@ -9,13 +9,8 @@ public class PauseMenu : BaseMenu
     public Button resumeGame;
     public Button returnToMenu;
     public Button quitGame;
+    public bool isPaused = false;
 
-    InputManager inputManager;
-
-    private void Start()
-    {
-        inputManager = GetComponent<InputManager>();
-    }
     public override void InitState(MenuController context)
     {
         base.InitState(context);
@@ -37,14 +32,45 @@ public class PauseMenu : BaseMenu
     {
         base.EnterState();
         Time.timeScale = 0.0f;
-        //inputManager.stopTimer();
+        isPaused = true;
+
+        //InputManager.Instance.SetInputEnabled(false);
+
+        // InputManager.Instance.DisableTouch();
+
+        if (InputManager.Instance != null)
+            InputManager.Instance.SetInputEnabled(false);
+        //InputManager.Instance.inputEnabled = false;
+
+        // Clear any ongoing touch so resume won't process it
+        //var tapDetector = FindObjectOfType<TapDetection>();
+        //if (tapDetector != null)
+        //{
+        //    tapDetector.ResetTouch();
+        //}
     }
 
     public override void ExitState()
     {
         base.ExitState();
         Time.timeScale = 1.0f;
-        //inputManager.startTimer();
+        isPaused = false;
+
+        InputManager.Instance.SetInputEnabled(true);
+        //// InputManager.Instance.EnableTouch();
+        ///
+        //Time.timeScale = 1.0f;
+        //isPaused = false;
+
+        //if (InputManager.Instance != null)
+        //    InputManager.Instance.inputEnabled = true;
+
+        //// Tell tap detection to ignore the next touch
+        //var tapDetector = FindObjectOfType<TapDetection>();
+        //if (tapDetector != null)
+        //{
+        //    tapDetector.IgnoreNextTouch();
+        //}
     }
 
     public void OnDestroy()

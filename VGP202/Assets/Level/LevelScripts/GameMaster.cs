@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1)]
-public class GameMaster : MonoBehaviour
+public class GameMaster : MonoBehaviour //sig
 {
     private static GameMaster instance = null;
 
@@ -53,10 +53,12 @@ public class GameMaster : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Infinite") // Replace with any relevant scene name
-        {
-            SpawnPlayer();
-        }
+        SpawnPlayer();
+
+        //if (scene.name == "Infinite") // Replace with any relevant scene name
+        //{
+        //    SpawnPlayer();
+        //}
     }
 
     public void SpawnPlayer()
@@ -77,6 +79,17 @@ public class GameMaster : MonoBehaviour
         Application.Quit();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
