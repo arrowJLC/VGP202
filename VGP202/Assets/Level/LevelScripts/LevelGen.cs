@@ -104,7 +104,7 @@ public class TileLevelGen : MonoBehaviour
     private void FixedUpdate()
     {
         gameTime += Time.deltaTime;
-        Debug.Log("Time: " + Mathf.FloorToInt(gameTime));
+       // Debug.Log("Time: " + Mathf.FloorToInt(gameTime));
 
         if(!oneMin && gameTime >= 30f && gameTime <= 60f)
         {

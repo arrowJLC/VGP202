@@ -31,8 +31,6 @@ public class PlayerController : MonoBehaviour
 
    // public GameObject playerGoal;
 
-
-
     [Header("Levels")]
     private float playerLife = 100;
     private float projectileCount = 3;
@@ -264,7 +262,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.collider.CompareTag("Block"))
         {
-            Debug.Log("player hit ob");
+           // Debug.Log("player hit ob");
             // fix death sound not playing
             audioSource.PlayOneShot(deathSound);
             Destroy(gameObject, deathSound.length);
@@ -275,6 +273,8 @@ public class PlayerController : MonoBehaviour
             string finalTime = levelTimer.getTime();
 
             IGM.OnDeath(finalTime);
+
+            levelTimer.highScoreUpdate();
         }
         if (collision.collider.CompareTag("EnemyProjectile"))
         {
@@ -286,12 +286,17 @@ public class PlayerController : MonoBehaviour
 
             IGM.OnDeath(finalTime);
 
+
+            levelTimer.highScoreUpdate();
+
             Debug.Log("Game Over");
 
             // add method so ads arnt spam
             UnityAdsManager ads = FindFirstObjectByType<UnityAdsManager>();
             if (ads != null)
             {
+
+                Debug.Log("Ad shown Here");
                 ads.LoadNonRewardedAd();
                 ads.ShowNonRewardedAd();
             }

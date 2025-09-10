@@ -7,6 +7,10 @@ public class LevelTimer : MonoBehaviour
     bool timerActive = false;
     float currentTime;
     public TMP_Text currentTimeText;
+    public int yourTime;
+
+    public TMP_Text yourScoreText;
+    public TMP_Text highScoreText;
 
     private void Start()
     {
@@ -45,13 +49,19 @@ public class LevelTimer : MonoBehaviour
     public void stopTimer()
     {
         timerActive = false;
+        //string finalTime = getTime();
+
+        yourTime = Mathf.RoundToInt(currentTime);
+
+        highScoreUpdate();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Hit Player");
+           // Debug.Log("Hit Player");
             startTimer();
         }
     }
@@ -64,4 +74,21 @@ public class LevelTimer : MonoBehaviour
         }
     }
 
+    public void highScoreUpdate()
+    {
+        int savedHighScore = PlayerPrefs.GetInt("SavedHighScore", int.MaxValue);
+
+        if (yourTime > savedHighScore)
+        {
+            PlayerPrefs.SetInt("SavedHighScore", yourTime);
+            savedHighScore = yourTime;
+        }
+
+        PlayerPrefs.Save();
+        TimeSpan yourTimeSpan = TimeSpan.FromSeconds(yourTime);
+        TimeSpan bestTimeSpan = TimeSpan.FromSeconds(savedHighScore);
+
+        yourScoreText.text = "" + yourTimeSpan.Minutes.ToString() + ":" + yourTimeSpan.Seconds.ToString("D2");
+        highScoreText.text = "" + bestTimeSpan.Minutes.ToString() + ":" + bestTimeSpan.Seconds.ToString("D2");
+    }
 }

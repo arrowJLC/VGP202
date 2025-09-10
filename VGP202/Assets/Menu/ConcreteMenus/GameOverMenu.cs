@@ -36,7 +36,7 @@ public class GameOverMenu : BaseMenu
         base.EnterState();
         Time.timeScale = 0.0f;
         
-        Debug.Log("GameOverMenu showing time: " + menuController.GetDeathTime());
+        //Debug.Log("GameOverMenu showing time: " + menuController.GetDeathTime());
 
         string finalTime = menuController.GetDeathTime();
         timeDisplay.text = finalTime;
