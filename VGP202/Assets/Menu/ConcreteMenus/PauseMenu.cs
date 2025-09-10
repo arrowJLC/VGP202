@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,21 +12,39 @@ public class PauseMenu : BaseMenu
     public Button quitGame;
     public bool isPaused = false;
 
+    public Slider pauseMasterSlider;
+    public TMP_Text pauseMasterText;
+
+    public Slider pauseMusicSlider;
+    public TMP_Text pauseMusicText;
+
+    public Slider pauseSFXSlider;
+    public TMP_Text pauseSFXText;
+
     public override void InitState(MenuController context)
     {
         base.InitState(context);
         state = MenuController.MenuStates.Pause;
 
-        returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("Main Menu"));
+        //returnToMenu.onClick.AddListener(() => SceneManager.LoadScene("Main Menu"));
+        returnToMenu.onClick.AddListener(ReturnToMainMenu);
+
         //resumeGame.onClick.AddListener(() => SetNextMenu(MenuController.MenuStates.InGame));
         resumeGame.onClick.AddListener(() =>
         {
             SetNextMenu(MenuController.MenuStates.InGame);
 
             var player = GameObject.FindWithTag("Player")?.GetComponent<PlayerController>();
-            player?.OnResumeGame(); // Clear any jump state
+            player?.OnResumeGame();
         });
         quitGame.onClick.AddListener(QuitGame);
+
+        if (AudioSettingsManager.Instance != null)
+        {
+            AudioSettingsManager.Instance.RegisterSlider("MasterVol", pauseMasterSlider, pauseMasterText);
+            AudioSettingsManager.Instance.RegisterSlider("MusicVol", pauseMusicSlider, pauseMusicText);
+            AudioSettingsManager.Instance.RegisterSlider("SFXVol", pauseSFXSlider, pauseSFXText);
+        }
     }
 
     public override void EnterState()
@@ -48,6 +67,8 @@ public class PauseMenu : BaseMenu
         //{
         //    tapDetector.ResetTouch();
         //}
+
+        AudioSettingsManager.Instance?.LoadAll();
     }
 
     public override void ExitState()
@@ -76,5 +97,17 @@ public class PauseMenu : BaseMenu
     public void OnDestroy()
     {
         Time.timeScale = 1.0f;
+    }
+
+    private void ReturnToMainMenu()
+    {
+        var player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            Destroy(player);
+        }
+
+        //Destroy(GameMaster.Instance.gameObject);
+        SceneManager.LoadScene("Main Menu");
     }
 }

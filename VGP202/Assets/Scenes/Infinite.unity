@@ -937,7 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3680199858736389263, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1554
+      value: 1571
       objectReference: {fileID: 0}
     - target: {fileID: 4356451574491410312, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: m_LocalScale.x
@@ -1045,7 +1045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8133355005208599595, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 737
+      value: 715
       objectReference: {fileID: 0}
     - target: {fileID: 8386129484477634409, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: backButton
@@ -1061,7 +1061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8653793906712653513, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 8653793906712653513, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1100,6 +1100,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4356451574491410312, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
   m_PrefabInstance: {fileID: 481464683}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &481464685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8856242771143799315, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
+  m_PrefabInstance: {fileID: 481464683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &481464686 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4925384635061242599, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
+  m_PrefabInstance: {fileID: 481464683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &481464687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5468955701649029662, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
+  m_PrefabInstance: {fileID: 481464683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &481464688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6077272196187147692, guid: c966cb6019a199d46bd9fdf0a9bfb2d9, type: 3}
+  m_PrefabInstance: {fileID: 481464683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &642462522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,6 +4187,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1520732987223802366, guid: 68d0b12f1027dab489e6d0a1f90315ff, type: 3}
+      propertyPath: pauseSFXText
+      value: 
+      objectReference: {fileID: 481464685}
+    - target: {fileID: 1520732987223802366, guid: 68d0b12f1027dab489e6d0a1f90315ff, type: 3}
+      propertyPath: pauseMusicText
+      value: 
+      objectReference: {fileID: 481464687}
+    - target: {fileID: 1520732987223802366, guid: 68d0b12f1027dab489e6d0a1f90315ff, type: 3}
+      propertyPath: pauseSFXSlider
+      value: 
+      objectReference: {fileID: 481464686}
+    - target: {fileID: 1520732987223802366, guid: 68d0b12f1027dab489e6d0a1f90315ff, type: 3}
+      propertyPath: pauseMusicSlider
+      value: 
+      objectReference: {fileID: 481464688}
     - target: {fileID: 2928944407878721934, guid: 68d0b12f1027dab489e6d0a1f90315ff, type: 3}
       propertyPath: m_Name
       value: Canvas Temp

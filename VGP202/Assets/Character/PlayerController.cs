@@ -287,6 +287,14 @@ public class PlayerController : MonoBehaviour
             IGM.OnDeath(finalTime);
 
             Debug.Log("Game Over");
+
+            // add method so ads arnt spam
+            UnityAdsManager ads = FindFirstObjectByType<UnityAdsManager>();
+            if (ads != null)
+            {
+                ads.LoadNonRewardedAd();
+                ads.ShowNonRewardedAd();
+            }
         }
 
         //if (collision.collider.CompareTag("Finish"))

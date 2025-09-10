@@ -53,12 +53,17 @@ public class GameMaster : MonoBehaviour //sig
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        SpawnPlayer();
+        //SpawnPlayer();
 
-        //if (scene.name == "Infinite") // Replace with any relevant scene name
-        //{
-        //    SpawnPlayer();
-        //}
+        if (scene.name == "Infinite") // Replace with any relevant scene name
+        {
+            SpawnPlayer();
+        }
+
+        if (scene.name.StartsWith("Level"))
+        {
+            SpawnPlayer();
+        }
     }
 
     public void SpawnPlayer()
