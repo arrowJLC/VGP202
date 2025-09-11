@@ -107,7 +107,7 @@ MonoBehaviour:
   levelTimer: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   groundCheck: {fileID: 0}
   groundCheckRadius: 0.2
   initialShotVelocity: {x: 5, y: 0}

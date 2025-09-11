@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 115078859785371776}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.36, y: -0.8, z: 0}
+  m_LocalPosition: {x: -0.3248, y: 0.0101, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,7 +93,7 @@ Transform:
   m_GameObject: {fileID: 5534672767494084865}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.29, y: -3.4783416, z: 0}
+  m_LocalPosition: {x: 7384.71, y: 0.0079064835, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -199,13 +199,15 @@ MonoBehaviour:
   levelTimer: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  groundCheck: {fileID: 0}
+    m_Bits: 8
+  groundCheck: {fileID: 6325009802142317064}
   groundCheckRadius: 0.2
   initialShotVelocity: {x: 5, y: 0}
   spawnPoint: {fileID: 3688796345469837344, guid: 5d2b3b99cd1c69e4a887b67480613748, type: 3}
   projectilePrefab: {fileID: 4200844050065923393, guid: 413e3e85d3c0813498cf4f6576e47cd7, type: 3}
   top: 0
+  isGrounded: 0
+  moveSpeed: 0
   frames:
   - {fileID: -2310068095257762341, guid: 09f01223683e5ee4ba06e82b5dbd5519, type: 3}
   - {fileID: -1125284731850238661, guid: 09f01223683e5ee4ba06e82b5dbd5519, type: 3}
@@ -363,7 +365,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.3682127, y: -0.40597808}
+  m_Offset: {x: -0.33, y: 0.65}
   m_Radius: 0.65958035
 --- !u!114 &2504434600111230781
 MonoBehaviour:

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1)]
@@ -9,6 +10,9 @@ public class GameMaster : MonoBehaviour //sig
 
     [SerializeField] private GameObject playerPrefab;
     private GameObject currentPlayer;
+    public int gamePlayed = 1;
+
+    public bool isRewarded = false;
 
     //public static GameMaster Instance
     //{
@@ -44,11 +48,28 @@ public class GameMaster : MonoBehaviour //sig
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        StartCoroutine(displayBanner());
+    }
+
+    private IEnumerator displayBanner()
+    {
+        yield return new WaitForSeconds(1f);
+        AdsManager.Instance.bannerAds.ShowBannerAd();
     }
 
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Update()
+    {
+        isRewarded = false;
+        if (gamePlayed % 3 == 0)
+        {
+            AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -57,12 +78,21 @@ public class GameMaster : MonoBehaviour //sig
 
         if (scene.name == "Infinite") // Replace with any relevant scene name
         {
+            gamePlayed++;
             SpawnPlayer();
+            AdsManager.Instance.bannerAds.HideBannerAd();
         }
 
         if (scene.name.StartsWith("Level"))
         {
+            gamePlayed++;
             SpawnPlayer();
+            AdsManager.Instance.bannerAds.HideBannerAd();
+        }
+
+        if (scene.name.StartsWith("Main Menu"))
+        {
+            AdsManager.Instance.bannerAds.ShowBannerAd();
         }
     }
 

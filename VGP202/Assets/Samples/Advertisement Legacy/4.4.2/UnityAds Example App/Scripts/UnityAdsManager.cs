@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnityAdsManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    public string GAME_ID = "5943166";     //"3003911"; //replace with your gameID from dashboard. note: will be different for each platform.
+    public string GAME_ID = "5944239"; //"5943166";     //"3003911"; //replace with your gameID from dashboard. note: will be different for each platform.
 
     private string BANNER_PLACEMENT = "Banner_Android";
     private string VIDEO_PLACEMENT = "Interstital_Android";
@@ -29,7 +29,7 @@ public class UnityAdsManager : MonoBehaviour, IUnityAdsInitializationListener, I
 
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            GAME_ID = "5943167";
+            GAME_ID = "5944238";//"5943167";
 
             BANNER_PLACEMENT = "Banner_iOS";
             VIDEO_PLACEMENT = "Interstital_iOS";

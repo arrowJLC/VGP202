@@ -197,7 +197,6 @@ GameObject:
   - component: {fileID: 6332960403119897867}
   - component: {fileID: 2509846931119059219}
   - component: {fileID: 4563996362656635718}
-  - component: {fileID: 4945251544183954874}
   m_Layer: 0
   m_Name: 6Piece  Gap
   m_TagString: Untagged
@@ -299,15 +298,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4945251544183954874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6585296479188331175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4764cf9a334900d449f6d152097ed78b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

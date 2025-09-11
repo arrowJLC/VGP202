@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
-
+[RequireComponent(typeof(GroundCheck))]
 public class PlayerController : MonoBehaviour
 {
     [Header("General")]
@@ -27,13 +27,14 @@ public class PlayerController : MonoBehaviour
     bool canJump = true;
     public bool top;
 
-    private bool isGrounded = false;
+    public bool isGrounded = false;
 
    // public GameObject playerGoal;
 
     [Header("Levels")]
     private float playerLife = 100;
     private float projectileCount = 3;
+    public float moveSpeed;
 
     public Sprite[] frames;        // Assign in Inspector
     public float frameRate = 12f;  // Frames per second
@@ -75,7 +76,14 @@ public class PlayerController : MonoBehaviour
 
             Physics2D.gravity = new Vector2(0, -70f);
             jumpForce = 20;
+
+            Vector2 velocity = rb.linearVelocity;
+
+            velocity.x = moveSpeed;
+            rb.linearVelocity = Vector2.right * moveSpeed;
         }
+        transform.position += Vector3.right * 9.5f * Time.deltaTime;
+
 
         if (sceneName == "Infinite")
         {
@@ -96,38 +104,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         checkIsGrounded();
-        // Check if the player is on the ground
-        //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    currentMenuController.SetActiveState(MenuController.MenuStates.Pause);
-        //}
     }
 
     private void checkIsGrounded()
     {
-        //Debug.Log("OPlayer is grounded");
-        //if (!isGrounded)
-        //{
-        //    Debug.Log("O");
-        //    //if (rb.linearVelocity.y <= 0) isGrounded = gc.IsGrounded();
-        //}
-        //else isGrounded = gc.IsGrounded();
-
-        bool groundedNow = gc.IsGrounded();
-
-        if (groundedNow && !isGrounded)
+        if (!isGrounded)
         {
-            Debug.Log("Player just landed");
+            if (rb.linearVelocity.y <= 0) isGrounded = gc.IsGrounded();
         }
-        else if (!groundedNow && isGrounded)
-        {
-            Debug.Log("Player just left the ground");
-        }
-
-        isGrounded = groundedNow;
+        else isGrounded = gc.IsGrounded();
     }
 
+    
     private void FixedUpdate()
     {
         //if (sceneName.StartsWith("Level"))
@@ -177,8 +165,6 @@ public class PlayerController : MonoBehaviour
     {
         if (frames == null || frames.Length == 0) return;
 
-        // 18 segments from 90 down to 0 means each segment covers 5 steps (90 / 18 = 5)
-        // So map currentJ to frame index:
         int segmentSize = 5;
 
         int segmentIndex = (90 - currentJ) / segmentSize; // 0 to 17
@@ -198,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
     public void playerJump()
     {
-        if (canJump )//&& isGrounded)
+        if (canJump && isGrounded)
         {
             //rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             // rb.linearVelocity = Vector2.zero;
@@ -212,9 +198,8 @@ public class PlayerController : MonoBehaviour
 
     public void playerNegativeJump()
     {
-        if (canJump)
+        if (canJump && isGrounded)
         {
-            // rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce);
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(Vector2.up * -jumpForce, ForceMode2D.Impulse);
             audioSource.PlayOneShot(jumpSound);
