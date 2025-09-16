@@ -33,6 +33,9 @@ public class CameraManager : MonoBehaviour
     }
     private void LateUpdate()
     {
+        if (target == null)
+            return;
+
         float targetX = target.position.x + xOffset;
         float targetY = transform.position.y;
 

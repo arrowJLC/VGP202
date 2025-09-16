@@ -12,6 +12,7 @@ TagManager:
   - Timer
   - PauseButton
   - Barrier
+  - SnowPatch
   layers:
   - Default
   - TransparentFX

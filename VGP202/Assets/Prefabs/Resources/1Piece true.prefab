@@ -98,7 +98,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2711359049571874242}
   - component: {fileID: 1611719835750462859}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 1Piece true
   m_TagString: Block
   m_Icon: {fileID: 0}

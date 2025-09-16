@@ -36,8 +36,8 @@ public class PlayerController : MonoBehaviour
     private float projectileCount = 3;
     public float moveSpeed;
 
-    public Sprite[] frames;        // Assign in Inspector
-    public float frameRate = 12f;  // Frames per second
+    public Sprite[] frames;  
+    public float frameRate = 12f;  
     private SpriteRenderer sr;
     private int currentFrame;
     public float stepDuration = 1f;
@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
 
     public float jumpForce = 6f;
     
-
     [Header("Audio")]
     public AudioClip jumpSound;
     public AudioClip gravitySound;
@@ -78,19 +77,18 @@ public class PlayerController : MonoBehaviour
             jumpForce = 20;
 
             Vector2 velocity = rb.linearVelocity;
-
             velocity.x = moveSpeed;
-            rb.linearVelocity = Vector2.right * moveSpeed;
+            rb.linearVelocity = velocity;
         }
-        transform.position += Vector3.right * 9.5f * Time.deltaTime;
-
-
+       
+        Debug.Log("Velocity: " + rb.linearVelocity);
         if (sceneName == "Infinite")
         {
             Physics2D.gravity = new Vector2(0, -9.81f);
             jumpForce = 6;
         }
     }
+
 
     void Awake()
     {
@@ -118,15 +116,17 @@ public class PlayerController : MonoBehaviour
     
     private void FixedUpdate()
     {
-        //if (sceneName.StartsWith("Level"))
-        //{
-        //    //Vector2 velocity = rb.linearVelocity;
+        string sceneName = SceneManager.GetActiveScene().name;
 
-        //    //velocity.x = moveSpeed;
-        //    //rb.linearVelocity = Vector2.right * moveSpeed;
-        //}
+        if (sceneName.StartsWith("Level"))
+        {
+            moveSpeed = 5;
 
-        // transform.position += Vector3.right * 9.5f *Time.deltaTime
+            Vector2 velocity = rb.linearVelocity;
+            velocity.x = moveSpeed;
+            rb.linearVelocity = velocity;
+    
+        }
     }
 
     public void StartCountdown()
@@ -245,6 +245,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        string sceneName = SceneManager.GetActiveScene().name;
+
         if (collision.collider.CompareTag("Block"))
         {
            // Debug.Log("player hit ob");
@@ -254,49 +256,44 @@ public class PlayerController : MonoBehaviour
             //playerGoal.SetActive(true);
             //onGameOver();
             //IGM.OnDeath();
-            levelTimer.stopTimer(); // Stop the timer
-            string finalTime = levelTimer.getTime();
 
-            IGM.OnDeath(finalTime);
+            if (sceneName == "Infinite")
+            {
+                levelTimer.stopTimer();
+                string finalTime = levelTimer.getTime();
 
-            levelTimer.highScoreUpdate();
+                IGM.OnDeath(finalTime);
+
+                levelTimer.highScoreUpdate();
+            }
+           
         }
         if (collision.collider.CompareTag("EnemyProjectile"))
         {
             audioSource.PlayOneShot(deathSound);
             Destroy(gameObject, deathSound.length);
 
-            levelTimer.stopTimer(); // Stop the timer
-            string finalTime = levelTimer.getTime();
-
-            IGM.OnDeath(finalTime);
-
-
-            levelTimer.highScoreUpdate();
-
-            Debug.Log("Game Over");
-
-            // add method so ads arnt spam
-            UnityAdsManager ads = FindFirstObjectByType<UnityAdsManager>();
-            if (ads != null)
+            if (sceneName == "Infinite")
             {
+                levelTimer.stopTimer();
+                string finalTime = levelTimer.getTime();
 
-                Debug.Log("Ad shown Here");
-                ads.LoadNonRewardedAd();
-                ads.ShowNonRewardedAd();
+                IGM.OnDeath(finalTime);
+                levelTimer.highScoreUpdate();
+                Debug.Log("Game Over");
             }
         }
 
-        //if (collision.collider.CompareTag("Finish"))
-        //{
+        if (collision.collider.CompareTag("Finish"))
+        {
 
-        //}
+        }
 
-        //if (collision.collider.CompareTag("SnowPatch"))
-        //{
-        //    //StartCoroutine(hasBeenLongenogh());
+        if (collision.collider.CompareTag("SnowPatch"))
+        {
+            //StartCoroutine(hasBeenLongenogh());
 
-        //}
+        }
 
     }
 

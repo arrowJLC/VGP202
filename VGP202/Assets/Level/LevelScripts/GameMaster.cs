@@ -63,10 +63,17 @@ public class GameMaster : MonoBehaviour //sig
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    isRewarded = false;
+    //    if (gamePlayed % 5 == 0)
+    //    {
+    //        AdsManager.Instance.interstitialAds.ShowInterstitialAd();
+    //    }
+    //}
+    public void roundEnded()
     {
-        isRewarded = false;
-        if (gamePlayed % 3 == 0)
+        if (gamePlayed > 0 && gamePlayed % 3 == 0)
         {
             AdsManager.Instance.interstitialAds.ShowInterstitialAd();
         }
@@ -76,7 +83,7 @@ public class GameMaster : MonoBehaviour //sig
     {
         //SpawnPlayer();
 
-        if (scene.name == "Infinite") // Replace with any relevant scene name
+        if (scene.name == "Infinite")
         {
             gamePlayed++;
             SpawnPlayer();
@@ -93,6 +100,7 @@ public class GameMaster : MonoBehaviour //sig
         if (scene.name.StartsWith("Main Menu"))
         {
             AdsManager.Instance.bannerAds.ShowBannerAd();
+            roundEnded();
         }
     }
 
@@ -103,7 +111,7 @@ public class GameMaster : MonoBehaviour //sig
             Destroy(currentPlayer);
         }
 
-        //Vector3 spawnPosition = Vector3.zero; // Adjust as needed
+        //Vector3 spawnPosition = Vector3.zero;
         Vector3 spawnPosition = new Vector3(-6, 1, 1);
         currentPlayer = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
         OnPlayerSpawned?.Invoke(currentPlayer.GetComponent<PlayerController>());
